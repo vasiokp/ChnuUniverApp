@@ -73,7 +73,7 @@ class Login extends Component {
   login() {
 		this.props.login(this.state.login, this.state.password).then(() => {
 			if (this.props.profile.loggedIn === true) {
-        this.props.navigation.navigate('App');
+				this.props.navigation.navigate('App');
 			}
 		})
 	}

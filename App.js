@@ -3,7 +3,7 @@ import {createAppContainer, createSwitchNavigator } from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import { Provider } from 'react-redux'
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ScheduleTab from './src/screens/ScheduleTab'
 import ProfileTab from './src/screens/ProfileTab'
@@ -20,8 +20,17 @@ const AuthStack = createStackNavigator({
 });
 const TabNavigator = createBottomTabNavigator(
   {
-    ScheduleTab: {screen: ScheduleTab},
-    ProfileTab: {screen: ProfileTab},
+    ScheduleTab: {
+      screen: ScheduleTab,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (<Icon name="tasks" size={30} color="#000000" />)
+      }
+    },
+    ProfileTab: {
+      screen: ProfileTab,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={30} color="#000000" />)
+      }},
   },
   {
     initialRouteName: 'ScheduleTab',
