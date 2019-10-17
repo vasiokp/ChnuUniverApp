@@ -10,8 +10,7 @@ import ProfileTab from './src/screens/ProfileTab'
 import LoginScreen from './src/screens/Auth/Login'
 import AuthLoadingScreen from './src/screens/Auth/AuthLoading'
 
-import configureStore from './src/store/configureStore'
-const store = configureStore()
+import { store }  from './src/store/configureStore'
 
 const AuthStack = createStackNavigator({
   LoginScreen: {

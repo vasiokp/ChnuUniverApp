@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { store, startLogin } from '../../App'
+import { store } from '../store/configureStore'
 import { relogin } from '../store/actions'
 
 const instance = axios.create({
   //baseURL: 'https://universityapi.azurewebsites.net'
-  baseURL: 'http://mykolag-001-site10.etempurl.com'
+	baseURL: 'http://mykolag-001-site10.etempurl.com'
 })
 
 instance.interceptors.request.use(config => {
@@ -16,7 +16,7 @@ instance.interceptors.request.use(config => {
 })
 
 instance.interceptors.response.use(
-	null,
+	data => data,
 	error => {
 		if (error.response && error.response.status) {
 			switch (error.response.status) {
