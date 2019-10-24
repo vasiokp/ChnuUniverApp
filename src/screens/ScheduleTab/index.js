@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, Button, Platform } from 'react-native'
 import { Agenda, LocaleConfig } from 'react-native-calendars'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -74,20 +74,34 @@ const noFilterMessage = () => (
 )
 
 class ScheduleTab extends Component {
-  static navigatorButtons = {
-    rightButtons: [{
-      title: 'Сьогодні',
-      id: 'today'
-    }]
-  }
-
   constructor(props) {
     super(props)
-    //this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
     this.state = {
+      showFilter: false,
       selectedDate: moment().format(dateFormat),
-      showFilter: false
     }
+  }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Розклад',
+      headerLeft: () => (
+        <Button
+          onPress={navigation.getParam('toggleFilter')}
+          title="Фільтер"
+        />),
+      headerRight: () => (
+        <Button
+          onPress={navigation.getParam('setCalendarToday')}
+          title="Сьогодні"
+        />
+      ),
+    };
+  };
+
+  setCalendarToday = () => {
+    this.agenda.chooseDay(moment().format(dateFormat))
+  }
+
     // const {navigation} = this.props;
     // navigation.navigate('ProfileTab', {name: 'from schedule'})}
     // Icon.getImageSource((Platform.OS === 'ios' ? 'ios' : 'md') + '-options', 28).then(icon => {
@@ -101,25 +115,12 @@ class ScheduleTab extends Component {
     //   //fix for android: incorrect recalculation of width, when set left buttons
     //   this.props.navigator.setStyle({ navBarTitleTextCentered: true });
     // })
-  }
-
-  onNavigatorEvent(event) {
-    if (event.type == 'NavBarButtonPress') {
-      switch (event.id) {
-        case 'today':
-          this.agenda.chooseDay(moment().format(dateFormat))
-          return
-        case 'filter':
-          this.toggleFilter()
-          return
-        default:
-          return
-      }
-    }
-  }
 
   componentDidMount() {
-    this.agenda.chooseDay(moment().format(dateFormat))
+    this.props.navigation.setParams({ setCalendarToday: this.setCalendarToday });
+    this.props.navigation.setParams({ toggleFilter: this.toggleFilter });
+    this.setCalendarToday()
+
     this.props.fetchScheduleTypes()
     const intervalId = setInterval(() => {
       this.props.updateSchedule()
@@ -142,15 +143,14 @@ class ScheduleTab extends Component {
 
   openDetails(item) {
     this.props.clearScheduleDetails().then(() => {
-      // this.props.navigator.push({
-      //   screen: 'ScheduleDetails',
-      //   title: 'Подробиці',
-      //   passProps: { passedItem: item }
-      // })
+    this.props.navigation.navigate('ScheduleDetailsScreen', {
+        title: 'Подробиці',
+        passedItem: item
+      })
     })
   }
 
-  toggleFilter() {
+  toggleFilter = () => {
     if (this.state.showFilter) {
       this.filter.hide()
       this.setState({ showFilter: false })

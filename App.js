@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ScheduleTab from './src/screens/ScheduleTab'
+import ScheduleDetailsScreen from './src/screens/ScheduleTab/components/ScheduleDetails'
 import ProfileTab from './src/screens/ProfileTab'
 import LoginScreen from './src/screens/Auth/Login'
 import AuthLoadingScreen from './src/screens/Auth/AuthLoading'
@@ -17,12 +18,32 @@ const AuthStack = createStackNavigator({
     screen: LoginScreen
   }
 });
+
+const ScheduleStack = createStackNavigator({
+    ScheduleTab: {
+      screen: ScheduleTab,
+    },
+    ScheduleDetailsScreen: ScheduleDetailsScreen
+  },
+  {
+    headerLayoutPreset: 'center',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#F89554',
+      },
+      headerTintColor: '#000',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+});
+
 const TabNavigator = createBottomTabNavigator(
   {
     ScheduleTab: {
-      screen: ScheduleTab,
+      screen: ScheduleStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (<Icon name="tasks" size={30} color="#000000" />)
+        tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={30} color="#000000" />)
       }
     },
     ProfileTab: {

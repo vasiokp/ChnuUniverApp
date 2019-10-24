@@ -10,7 +10,8 @@ import {
   RefreshControl,
   Platform,
   TouchableOpacity,
-  Alert
+  Alert,
+  Button
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -51,88 +52,98 @@ const removeIcon = (
 )
 
 class ScheduleDetails extends Component {
-  openAttendanceScreen = item => {
-    this.props.navigator.push({
-      screen: 'Attendance',
-      title: 'Відвідування',
-      passProps: {
-        schedule: item
-    }
-  })
-  }
-
+  // openAttendanceScreen = item => {
+  //   // this.props.navigator.push({
+  //   //   screen: 'Attendance',
+  //   //   title: 'Відвідування',
+  //   //   passProps: {
+  //   //     schedule: item
+  //   // }
+  // //})
+  // }
   constructor(props) {
     super(props)
-    if (props.passedItem.isMyLesson) {
-      this.props.navigator.setButtons({
-        rightButtons: [saveButton]
-      })
-    }
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+    // if (this.props.navigation.getParam('passedItem', {}).isMyLesson) {
+      // this.props.navigator.setButtons({
+      //   rightButtons: [saveButton]
+      // })
+    // }
+
     this.state = {
       noteText: '',
-      messages: []
+      messages: [],
+      isEnabledSaveBtn: false
     }
   }
 
-  messageInputs = []
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Подробиці',
+      headerRight: () => (
+        <Button
+          onPress={navigation.getParam('saveEvent')}
+          title="Зберегти"
+        />
+      ),
+    };
+  };
 
-  onNavigatorEvent(event) {
-    if (event.type == 'NavBarButtonPress') {
-      if (event.id == 'save') {
-        //this.noteInput.blur()
-        this.messageInputs.forEach(input => {
-          if (input && input.blur) input.blur()
-        })
-        this.enableSaveButton(false)
-        if (this.state.messages) {
-          this.state.messages.forEach(message => {
-            const msg = this.props.scheduleDetails.item.Messages.find(m => m.Id === message.Id)
-            console.log(this.props.scheduleDetails.item.Messages)
-            console.log(msg)
-            if (msg) {
-              // update
-              this.props.updateMessage({
-                ...msg,
-                ScheduleId: this.props.passedItem.Id,
+  saveEvent = () => {
+    //this.noteInput.blur()
+    if (!this.state.isEnabledSaveBtn) return
+    this.messageInputs.forEach(input => {
+      if (input && input.blur) input.blur()
+    })
+    this.enableSaveButton(false)
+    if (this.state.messages) {
+      this.state.messages.forEach(message => {
+        const msg = this.props.scheduleDetails.item.Messages.find(m => m.Id === message.Id)
+        console.log(this.props.scheduleDetails.item.Messages)
+        console.log(msg)
+        if (msg) {
+          // update
+          this.props.updateMessage({
+            ...msg,
+            ScheduleId: this.props.navigation.getParam('passedItem', {}).Id,
+            Text: message.Text
+          })
+        } else if (!msg && message.Text !== '') {
+          // add
+          if (this.props.navigation.getParam('passedItem', {}).subSchedules && this.props.navigation.getParam('passedItem', {}).subSchedules.length > 1) {
+            this.props.navigation.getParam('passedItem', {}).subSchedules.forEach(s => {
+              this.props.addMessage({
+                ScheduleId: s.Id,
                 Text: message.Text
               })
-            } else if (!msg && message.Text !== '') {
-              // add
-              if (this.props.passedItem.subSchedules && this.props.passedItem.subSchedules.length > 1) {
-                this.props.passedItem.subSchedules.forEach(s => {
-                  this.props.addMessage({
-                    ScheduleId: s.Id,
-                    Text: message.Text
-                  })
-                })
-              } else {
-                this.props.addMessage({
-                  ScheduleId: this.props.passedItem.Id,
-                  Text: message.Text
-                })
-              }
-            }
-          })
+            })
+          } else {
+            this.props.addMessage({
+              ScheduleId: this.props.navigation.getParam('passedItem', {}).Id,
+              Text: message.Text
+            })
+          }
         }
-        if (this.props.scheduleDetails.item.Note && this.props.scheduleDetails.item.Note.Text !== this.state.noteText) {
-          this.props.updateNote({
-            ...this.props.scheduleDetails.item.Note,
-            ScheduleId: this.props.passedItem.Id,
-            Text: this.state.noteText
-          })
-        } else if (!this.props.scheduleDetails.item.Note && this.state.noteText !== '') {
-          this.props.addNote({
-            ScheduleId: this.props.passedItem.Id,
-            Text: this.state.noteText
-          })
-        }
-      }
+      })
+    }
+    if (this.props.scheduleDetails.item.Note && this.props.scheduleDetails.item.Note.Text !== this.state.noteText) {
+      this.props.updateNote({
+        ...this.props.scheduleDetails.item.Note,
+        ScheduleId: this.props.navigation.getParam('passedItem', {}).Id,
+        Text: this.state.noteText
+      })
+    } else if (!this.props.scheduleDetails.item.Note && this.state.noteText !== '') {
+      this.props.addNote({
+        ScheduleId: this.props.navigation.getParam('passedItem', {}).Id,
+        Text: this.state.noteText
+      })
     }
   }
+  messageInputs = []
 
   componentDidMount() {
-    this.props.fetchScheduleDetails(this.props.passedItem.Id).then(() => {
+    this.props.navigation.setParams({ saveEvent: this.saveEvent });
+
+    this.props.fetchScheduleDetails(this.props.navigation.getParam('passedItem', {}).Id).then(() => {
       this.setState({
         noteText: this.props.scheduleDetails.item.Note ? this.props.scheduleDetails.item.Note.Text : '',
         messages: this.props.scheduleDetails.item.Messages || []
@@ -149,7 +160,7 @@ class ScheduleDetails extends Component {
   }
 
   refresh() {
-    this.props.fetchScheduleDetails(this.props.passedItem.Id, true)
+    this.props.fetchScheduleDetails(this.props.navigation.getParam('passedItem', {}).Id, true)
     this.props.updateScheduleDetails()
   }
 
@@ -179,12 +190,7 @@ class ScheduleDetails extends Component {
   }
 
   enableSaveButton(enabled) {
-    this.props.navigator.setButtons({
-      rightButtons: [{
-        ...saveButton,
-        disabled: !enabled
-      }]
-    })
+    this.setState({isEnabledSaveBtn: enabled})
   }
 
   removeMessage(message) {
@@ -216,9 +222,9 @@ class ScheduleDetails extends Component {
   }
 
   render() {
-    const ScheduleType = this.props.scheduleTypes.items.find(st => st.Name === this.props.passedItem.ScheduleTypeName)
+    const ScheduleType = this.props.scheduleTypes.items.find(st => st.Name === this.props.navigation.getParam('passedItem', {}).ScheduleTypeName)
     const details = {
-      ...this.props.passedItem,
+      ...this.props.navigation.getParam('passedItem', {}),
       ScheduleType,
       moment: this.props.scheduleDetails.item.moment,
       BuildingAddress: this.props.scheduleDetails.item.Auditory && this.props.scheduleDetails.item.Auditory.Building ? this.props.scheduleDetails.item.Auditory.Building.Description : '',
@@ -287,12 +293,12 @@ class ScheduleDetails extends Component {
         ]
       }
     ]
-    if (this.props.passedItem.isMyLesson && this.props.profile.userRole === userRoles.TEACHER) {
+    if (this.props.navigation.getParam('passedItem', {}).isMyLesson && this.props.profile.userRole === userRoles.TEACHER) {
       sections.push({
         title: 'Відмітити присутніх',
         button: () => (
           <TouchableOpacity onPress={
-            this.openAttendanceScreen.bind(this, this.props.passedItem)
+            this.openAttendanceScreen.bind(this, this.props.navigation.getParam('passedItem', {}))
           }>
             {addIcon}
           </TouchableOpacity>
@@ -302,7 +308,7 @@ class ScheduleDetails extends Component {
     }
 
     if (this.props.profile.userRole === userRoles.STUDENT) {
-      if (this.props.passedItem.isMyLesson && details.Messages.length > 0) {
+      if (this.props.navigation.getParam('passedItem', {}).isMyLesson && details.Messages.length > 0) {
         sections.push({
           title: 'Повідомлення',
           data: [
@@ -380,7 +386,7 @@ class ScheduleDetails extends Component {
         ] : []
       })
     }
-    if (this.props.passedItem.isMyLesson) {
+    if (this.props.navigation.getParam('passedItem', {}).isMyLesson) {
       sections.push({
         title: 'Нотатки',
         data: [
