@@ -5,11 +5,14 @@ import {createStackNavigator} from 'react-navigation-stack';
 import { Provider } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import LoginScreen from './src/screens/Auth/Login'
+import AuthLoadingScreen from './src/screens/Auth/AuthLoading'
+
 import ScheduleTab from './src/screens/ScheduleTab'
 import ScheduleDetailsScreen from './src/screens/ScheduleTab/components/ScheduleDetails'
 import ProfileTab from './src/screens/ProfileTab'
-import LoginScreen from './src/screens/Auth/Login'
-import AuthLoadingScreen from './src/screens/Auth/AuthLoading'
+import InfoTab from './src/screens/InfoTab'
+
 
 import { store }  from './src/store/configureStore'
 
@@ -46,6 +49,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={30} color="#000000" />)
       }
     },
+    InfoTab: InfoTab,
     ProfileTab: {
       screen: ProfileTab,
       navigationOptions: {
