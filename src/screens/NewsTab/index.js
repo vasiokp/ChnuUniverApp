@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity, Platform, Text } from 'react-native';
+import { View, FlatList, TouchableOpacity, Platform, Text, Button } from 'react-native';
 import { connect } from 'react-redux'
 import { getNews, getImage } from '../../store/actions/index'
 import NewsItem from '../../components/NewsItem'
@@ -27,10 +27,6 @@ const noFilterMessage = () => (
 )
 
 class NewsTabScreen extends Component {
-  static navigationOptions = {
-    title: 'Новини'
-  }
-
   constructor(props) {
     super(props)
     // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
@@ -48,6 +44,17 @@ class NewsTabScreen extends Component {
     //   this.props.navigator.setStyle({ navBarTitleTextCentered: true });
     // })
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Новини',
+      headerLeft: () => (
+        <Button
+          onPress={navigation.getParam('toggleFilter')}
+          title="Фільтр"
+        />)
+    };
+  };
 
   // onNavigatorEvent(event) {
   //   if (event.type == 'NavBarButtonPress') {
@@ -80,6 +87,8 @@ class NewsTabScreen extends Component {
     );
   }
   componentDidMount() {
+    this.props.navigation.setParams({ toggleFilter: this.toggleFilter });
+
     this.props.fetchNewsTypes()
     this.props.getNews(this.props.news.filters).then(() => {
       this.props.news.items.forEach(item => {
@@ -88,7 +97,7 @@ class NewsTabScreen extends Component {
     })
   }
 
-  toggleFilter() {
+  toggleFilter = () => {
     if (this.state.showFilter) {
       this.filter.hide()
       this.setState({ showFilter: false })
@@ -127,7 +136,6 @@ class NewsTabScreen extends Component {
   }
 
   render() {
-    console.log(this.props.news.items)
     return (
       <View>
         <PageLayout>
