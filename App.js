@@ -26,6 +26,10 @@ import InfoTab from './src/screens/InfoTab'
 
 import { store }  from './src/store/configureStore'
 import { headerDefaultStyle } from './src/helpers/navigationHelper'
+import moment from 'moment'
+import 'moment/locale/uk'
+
+moment.locale('uk')
 
 const AuthStack = createStackNavigator({
   LoginScreen: {
