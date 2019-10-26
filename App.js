@@ -11,6 +11,12 @@ import AuthLoadingScreen from './src/screens/Auth/AuthLoading'
 import ScheduleTab from './src/screens/ScheduleTab'
 import ScheduleDetailsScreen from './src/screens/ScheduleTab/components/ScheduleDetails'
 
+import SessionTab from './src/screens/SessionTab'
+import CreditDetails from './src/screens/SessionTab/components/CreditDetails'
+import ExamDetails from './src/screens/SessionTab/components/ExamDetails'
+import RetakeDetails from './src/screens/SessionTab/components/RetakeDetails'
+import StateExamDetails from './src/screens/SessionTab/components/StateExamDetails'
+
 import NewsTab from './src/screens/NewsTab'
 import NewsScreenDetails from './src/screens/NewsTab/NewsDetails'
 
@@ -51,30 +57,74 @@ const NewsStack = createStackNavigator(
   headerDefaultStyle
 );
 
+const SessionStack = createStackNavigator(
+  {
+    SessionTab: {
+      screen: SessionTab,
+    },
+    CreditDetails: {
+      screen: CreditDetails,
+      navigationOptions: {
+        title: 'Заліки'
+      }
+    },
+    ExamDetails: {
+      screen: ExamDetails,
+      navigationOptions: {
+        title: 'Іспити'
+      }
+    },
+    RetakeDetails: {
+      screen: RetakeDetails,
+      navigationOptions: {
+        title: 'Перездачі'
+      }
+    },
+    StateExamDetails: {
+      screen: StateExamDetails,
+      navigationOptions: {
+        title: 'Державні іспити'
+      }
+    }
+  },
+  headerDefaultStyle
+);
+
 const TabNavigator = createBottomTabNavigator(
   {
     ScheduleTab: {
       screen: ScheduleStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={30} color="#000000" />)
+        title: 'Розклад',
+        tabBarIcon: ({ tintColor }) => (<Icon name="list-alt" size={28} color="#000000" />)
       }
     },
-    InfoTab: {
-      screen: InfoTab,
+    SessionTab: {
+      screen: SessionStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={30} color="#000000" />)
-      }
-    },
-    ProfileTab: {
-      screen: ProfileTab,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={30} color="#000000" />)
+        title: 'Сесія',
+        tabBarIcon: ({ tintColor }) => (<Icon name="graduation-cap" size={28} color="#000000" />)
       }
     },
     NewsTab: {
       screen: NewsStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (<Icon name="rocket" size={30} color="#000000" />)
+        title: 'Новини',
+        tabBarIcon: ({ tintColor }) => (<Icon name="university" size={28} color="#000000" />)
+      }
+    },
+    InfoTab: {
+      screen: InfoTab,
+      navigationOptions: {
+        title: 'Довідка',
+        tabBarIcon: ({ tintColor }) => (<Icon name="info" size={28} color="#000000" />)
+      }
+    },
+    ProfileTab: {
+      screen: ProfileTab,
+      navigationOptions: {
+        title: 'Профіль',
+        tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={28} color="#000000" />)
       }
     }
   },

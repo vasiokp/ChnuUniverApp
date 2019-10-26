@@ -87,7 +87,7 @@ class ScheduleTab extends Component {
       headerLeft: () => (
         <Button
           onPress={navigation.getParam('toggleFilter')}
-          title="Фільтер"
+          title="Фільтр"
         />),
       headerRight: () => (
         <Button
