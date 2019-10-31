@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Button, Platform } from 'react-native'
 import { Agenda, LocaleConfig } from 'react-native-calendars'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
+import IconFA from 'react-native-vector-icons/FontAwesome';
 import {
   fetchSchedule,
   fetchAllSchedule,
@@ -85,10 +86,10 @@ class ScheduleTab extends Component {
     return {
       title: 'Розклад',
       headerLeft: () => (
-        <Button
-          onPress={navigation.getParam('toggleFilter')}
-          title="Фільтр"
-        />),
+        <TouchableOpacity onPress={navigation.getParam('toggleFilter')}>
+          <IconFA name="navicon" size={30} color="#000000" style={{ marginLeft: 10 }}/>
+        </TouchableOpacity>
+        ),
       headerRight: () => (
         <Button
           onPress={navigation.getParam('setCalendarToday')}
