@@ -163,13 +163,9 @@ class ProfileTab extends React.Component {
           </View>
         )}
         ListFooterComponent={() => (
-          <View style={{ height: 100, paddingTop: 25, paddingHorizontal: '15%' }} />
+          <View style={{ height: 20, paddingTop: 25, paddingHorizontal: '15%' }} />
         )}>
         </SectionList>
-        <Button
-              title="Go to Jane's profile"
-              onPress={() => navigate('ScheduleTab', {name: 'Jane'})}
-          />
       </>
       );
   }

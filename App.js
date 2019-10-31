@@ -72,6 +72,15 @@ const InfoStack = createStackNavigator(
   headerDefaultStyle
 );
 
+const ProfileStack = createStackNavigator(
+  {
+    ProfileTab: {
+      screen: ProfileTab,
+    },
+  },
+  headerDefaultStyle
+);
+
 const SessionStack = createStackNavigator(
   {
     SessionTab: {
@@ -136,7 +145,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     ProfileTab: {
-      screen: ProfileTab,
+      screen: ProfileStack,
       navigationOptions: {
         title: 'Профіль',
         tabBarIcon: ({ tintColor }) => (<Icon name="user-circle" size={28} color={tintColor}/>)
