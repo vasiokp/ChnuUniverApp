@@ -63,6 +63,15 @@ const NewsStack = createStackNavigator(
   headerDefaultStyle
 );
 
+const InfoStack = createStackNavigator(
+  {
+    InfoTab: {
+      screen: InfoTab,
+    },
+  },
+  headerDefaultStyle
+);
+
 const SessionStack = createStackNavigator(
   {
     SessionTab: {
@@ -120,7 +129,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     InfoTab: {
-      screen: InfoTab,
+      screen: InfoStack,
       navigationOptions: {
         title: 'Довідка',
         tabBarIcon: ({ tintColor }) => (<Icon name="info" size={28} color={tintColor}/>)
