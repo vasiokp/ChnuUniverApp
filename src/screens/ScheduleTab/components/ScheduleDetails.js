@@ -11,7 +11,8 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
-  Button
+  Button,
+  StyleSheet
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -80,10 +81,9 @@ class ScheduleDetails extends Component {
     return {
       title: 'Подробиці',
       headerRight: () => (
-        <Button
-          onPress={navigation.getParam('saveEvent')}
-          title="Зберегти"
-        />
+        <TouchableOpacity onPress={navigation.getParam('saveEvent')}>
+			    <Text style={ styles.defaultButtonStyle }>ЗБЕРЕГТИ</Text>
+		    </TouchableOpacity>
       ),
     };
   };
@@ -482,5 +482,15 @@ const mapStateToProps = state => {
     profile: state.profile
   }
 }
+
+const styles = StyleSheet.create({
+  defaultButtonStyle: {
+    alignSelf: 'center',
+    fontSize: 17,
+    color: '#666',
+    paddingHorizontal: 15,
+    paddingVertical: 7
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleDetails)
