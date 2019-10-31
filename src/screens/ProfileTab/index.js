@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, SectionList, TextInput, Button, Alert, TouchableOpacity } from 'react-native'
-
+import { connect } from 'react-redux'
+import { logout } from '../../store/actions/index'
 
 class ProfileTab extends React.Component {
   static navigationOptions = {
@@ -14,11 +15,10 @@ class ProfileTab extends React.Component {
       [
         { text: 'Ні', onPress: () => {}, style: 'cancel'},
         { text: 'Так', onPress: () => {
-          // this.props.logout().then(() => {
-          //   if (this.props.profile.loggedIn === false) {
-          //     startLogin()
-          //   }
-          // })
+          this.props.logout().then(() => {
+            if (this.props.profile.loggedIn === false)
+              this.props.navigation.navigate('Auth');
+          })
         }},
       ]
     )
@@ -34,6 +34,9 @@ class ProfileTab extends React.Component {
   }
 
   changePassword() {
+    this.props.navigation.navigate('ChangePassword', {
+      title: 'Заміна паролю',
+    })
     // this.props.navigator.showModal({
     //   screen: 'ChangePassword'
     // })
@@ -170,4 +173,17 @@ class ProfileTab extends React.Component {
       );
   }
 }
-export default ProfileTab
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    profile: state.profile,
+    groups: state.groups
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTab)

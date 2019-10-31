@@ -23,6 +23,7 @@ import NewsTab from './src/screens/NewsTab'
 import NewsScreenDetails from './src/screens/NewsTab/NewsDetails'
 
 import ProfileTab from './src/screens/ProfileTab'
+import ChangePassword from './src/screens/ProfileTab/components/ChangePassword'
 import InfoTab from './src/screens/InfoTab'
 
 
@@ -77,6 +78,12 @@ const ProfileStack = createStackNavigator(
     ProfileTab: {
       screen: ProfileTab,
     },
+    ChangePassword: {
+      screen: ChangePassword,
+      navigationOptions: {
+        title: 'Змінити пароль'
+      }
+    }
   },
   headerDefaultStyle
 );
