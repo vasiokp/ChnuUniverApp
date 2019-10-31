@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Button, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Button, Platform } from 'react-native'
 import { Agenda, LocaleConfig } from 'react-native-calendars'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -91,10 +91,9 @@ class ScheduleTab extends Component {
         </TouchableOpacity>
         ),
       headerRight: () => (
-        <Button
-          onPress={navigation.getParam('setCalendarToday')}
-          title="Сьогодні"
-        />
+        <TouchableOpacity onPress={navigation.getParam('setCalendarToday')}>
+          <Text style={styles.todayBtnStyles}>СЬОГОДНІ</Text>
+        </TouchableOpacity>
       ),
     };
   };
@@ -355,5 +354,16 @@ const mapStateToProps = state => {
     profile: state.profile
   }
 }
+
+const styles = StyleSheet.create({
+  todayBtnStyles: {
+    alignSelf: 'center',
+	  fontSize: 17,
+	  color: '#666',
+	  paddingHorizontal: 10,
+    paddingVertical: 7,
+    fontWeight: '700'
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleTab)
