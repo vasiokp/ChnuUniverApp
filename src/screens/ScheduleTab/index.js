@@ -87,7 +87,7 @@ class ScheduleTab extends Component {
       title: 'Розклад',
       headerLeft: () => (
         <TouchableOpacity onPress={navigation.getParam('toggleFilter')}>
-          <IconFA name="navicon" size={30} color="#000000" style={{ marginLeft: 10 }}/>
+          <IconFA name="navicon" size={30} color="#666" style={{ marginLeft: 10 }}/>
         </TouchableOpacity>
         ),
       headerRight: () => (
