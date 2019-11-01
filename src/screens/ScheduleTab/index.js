@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Button, Platform } from 'react-native'
 import { Agenda, LocaleConfig } from 'react-native-calendars'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/Ionicons'
-import IconFA from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   fetchSchedule,
   fetchAllSchedule,
@@ -87,7 +86,7 @@ class ScheduleTab extends Component {
       title: 'Розклад',
       headerLeft: () => (
         <TouchableOpacity onPress={navigation.getParam('toggleFilter')}>
-          <IconFA name="sliders" size={30} color="#666" style={{ marginLeft: 10 }}/>
+          <Icon name="sliders" size={30} color="#666" style={{ marginLeft: 10 }}/>
         </TouchableOpacity>
         ),
       headerRight: () => (

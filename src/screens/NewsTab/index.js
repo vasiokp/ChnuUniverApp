@@ -9,8 +9,7 @@ import {
   setNewsFilters,
   fetchNewsTypes
 } from '../../store/actions'
-import Icon from 'react-native-vector-icons/Ionicons'
-import IconFA from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const noFilterMessage = () => (
   <View style={{
@@ -51,7 +50,7 @@ class NewsTabScreen extends Component {
       title: 'Новини',
       headerLeft: () => (
         <TouchableOpacity onPress={navigation.getParam('toggleFilter')}>
-          <IconFA name="sliders" size={30} color="#666" style={{ marginLeft: 10 }}/>
+          <Icon name="sliders" size={30} color="#666" style={{ marginLeft: 10 }}/>
         </TouchableOpacity>
         )
     };
