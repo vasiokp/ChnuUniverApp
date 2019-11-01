@@ -80,11 +80,11 @@ class ScheduleDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Подробиці',
-      headerRight: () => (
+      headerRight: () => navigation.state.params && !navigation.state.params.disabled ? (
         <TouchableOpacity onPress={navigation.getParam('saveEvent')}>
-			    <Text style={ styles.defaultButtonStyle }>ЗБЕРЕГТИ</Text>
+			    <Text style={styles.defaultButtonStyle}>ЗБЕРЕГТИ</Text>
 		    </TouchableOpacity>
-      ),
+      ) : null
     };
   };
 
@@ -141,6 +141,7 @@ class ScheduleDetails extends Component {
   messageInputs = []
 
   componentDidMount() {
+    this.props.navigation.setParams({ disabled: !this.state.isEnabledSaveBtn });
     this.props.navigation.setParams({ saveEvent: this.saveEvent });
 
     this.props.fetchScheduleDetails(this.props.navigation.getParam('passedItem', {}).Id).then(() => {
@@ -191,6 +192,7 @@ class ScheduleDetails extends Component {
 
   enableSaveButton(enabled) {
     this.setState({isEnabledSaveBtn: enabled})
+    this.props.navigation.setParams({ disabled: !enabled });
   }
 
   removeMessage(message) {
