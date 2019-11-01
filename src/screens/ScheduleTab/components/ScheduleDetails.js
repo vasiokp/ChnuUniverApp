@@ -27,7 +27,7 @@ import {
 import moment from 'moment'
 import classTypes from '../../../plugins/classTypes'
 import { capitalize } from '../../../utils'
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import * as userRoles from '../../../plugins/userRoles'
 
 const refreshInterval = 30000 // 30 seconds
@@ -42,14 +42,12 @@ const saveButton = {
   disabled: true
 }
 
-const iconPrefix = Platform.OS === 'ios' ? 'ios' : 'md'
-
 const addIcon = (
-	<Icon name={`${iconPrefix}-add-circle-outline`} size={22} color="rgb(0, 122, 255)" />
+	<Icon name="plus-square-o" size={22} color="rgb(0, 122, 255)" />
 )
 
 const removeIcon = (
-	<Icon name={`${iconPrefix}-remove-circle-outline`} size={22} color="red" />
+	<Icon name="minus-square-o" size={22} color="red" />
 )
 
 class ScheduleDetails extends Component {
@@ -295,19 +293,19 @@ class ScheduleDetails extends Component {
         ]
       }
     ]
-    if (this.props.navigation.getParam('passedItem', {}).isMyLesson && this.props.profile.userRole === userRoles.TEACHER) {
-      sections.push({
-        title: 'Відмітити присутніх',
-        button: () => (
-          <TouchableOpacity onPress={
-            this.openAttendanceScreen.bind(this, this.props.navigation.getParam('passedItem', {}))
-          }>
-            {addIcon}
-          </TouchableOpacity>
-        ),
-        data: []
-      })
-    }
+    // if (this.props.navigation.getParam('passedItem', {}).isMyLesson && this.props.profile.userRole === userRoles.TEACHER) {
+    //   sections.push({
+    //     title: 'Відмітити присутніх',
+    //     button: () => (
+    //       <TouchableOpacity onPress={
+    //         this.openAttendanceScreen.bind(this, this.props.navigation.getParam('passedItem', {}))
+    //       }>
+    //         {addIcon}
+    //       </TouchableOpacity>
+    //     ),
+    //     data: []
+    //   })
+    // }
 
     if (this.props.profile.userRole === userRoles.STUDENT) {
       if (this.props.navigation.getParam('passedItem', {}).isMyLesson && details.Messages.length > 0) {
