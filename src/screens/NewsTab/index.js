@@ -51,7 +51,7 @@ class NewsTabScreen extends Component {
       title: 'Новини',
       headerLeft: () => (
         <TouchableOpacity onPress={navigation.getParam('toggleFilter')}>
-          <IconFA name="navicon" size={30} color="#666" style={{ marginLeft: 10 }}/>
+          <IconFA name="sliders" size={30} color="#666" style={{ marginLeft: 10 }}/>
         </TouchableOpacity>
         )
     };
