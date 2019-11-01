@@ -18,17 +18,11 @@ const KEYBOARD_HEIGHT = 200
 const PASSWORD_PATTERN = /(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{6,}/
 
 class ChangePassword extends Component {
-	// static navigatorButtons = {
-    // rightButtons: [{
-    //   title: 'Закрити',
-    //   id: 'close'
-    // }]
-	// }
 	
   constructor(props) {
 		super(props)
 		this.keyboardHeight = new Animated.Value(0)
-		//this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+		this.props.clearErrors()
 		this.state = {
 			oldPassword: '',
 			newPassword: '',
@@ -38,19 +32,6 @@ class ChangePassword extends Component {
 		}
 	}
 
-	onNavigatorEvent(event) {
-    if (event.type == 'NavBarButtonPress') {
-      switch (event.id) {
-				case 'close':
-					this.props.clearErrors()
-					this.props.navigator.dismissModal()
-					return
-        default:
-          return
-      }
-    }
-	}
-	
 	componentWillMount () {
 		if (Platform.OS === 'ios') {
     	this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardWillShow.bind(this))
@@ -107,7 +88,7 @@ class ChangePassword extends Component {
 			oldPassword: this.state.oldPassword
 		}).then(() => {
 			if (this.props.profile.error === false) {
-				this.props.navigator.dismissModal()
+				this.props.navigation.navigate('ProfileTab');
 			}
 		})
   }

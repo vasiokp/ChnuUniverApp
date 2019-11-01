@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, SectionList, TextInput, Button, Alert, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { logout } from '../../store/actions/index'
+import * as userRoles from '../../plugins/userRoles'
 
 class ProfileTab extends React.Component {
   static navigationOptions = {
@@ -37,9 +38,6 @@ class ProfileTab extends React.Component {
     this.props.navigation.navigate('ChangePassword', {
       title: 'Заміна паролю',
     })
-    // this.props.navigator.showModal({
-    //   screen: 'ChangePassword'
-    // })
   }
 
   render() {
@@ -52,7 +50,7 @@ class ProfileTab extends React.Component {
               key: 'email',
               template: () => (
                 <TextInput editable={false}
-                  value={'emalil@email.com'}
+                  value={this.props.profile.userInfo.Email}
                   placeholder="Не вказано"
                   underlineColorAndroid="#fff"
                   fontWeight="300"
@@ -69,7 +67,7 @@ class ProfileTab extends React.Component {
               key: 'phone',
               template: () => (
                 <TextInput editable={false}
-                  value={'+380'}
+                  value={this.props.profile.userInfo.Phone}
                   placeholder="Не вказано"
                   underlineColorAndroid="#fff"
                   fontWeight="300"
@@ -104,8 +102,7 @@ class ProfileTab extends React.Component {
           ]
         }
       ]
-      // const group = this.props.groups.items.find(g => g.Id === this.props.profile.userInfo.GroupId)
-      const group = {Name: 402}
+      const group = this.props.groups.items.find(g => g.Id === this.props.profile.userInfo.GroupId)
 
       return (<>
       <SectionList stickySectionHeadersEnabled={false}
@@ -149,24 +146,23 @@ class ProfileTab extends React.Component {
                   fontSize: 56,
                   fontWeight: '300',
                   color: '#333'
-                }}>{this.getPictureLetters('UserName')}</Text>
+                }}>{this.getPictureLetters(this.props.profile.userInfo.Name)}</Text>
                   </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
                 <Text style={{ paddingHorizontal: 40, fontSize: 22, textAlign: 'center' }}>
-                  UserName
+                {this.props.profile.userInfo.Name}
                 </Text>
-                {/* {this.props.profile.userRole === userRoles.STUDENT ? */}
+                {this.props.profile.userRole === userRoles.STUDENT ?
                   <Text style={{ fontWeight: '300', marginTop: 5 }}>
                     {group ? `група ${group.Name}`: null}
-                  </Text> 
-                  {/* : */}
-                {/* null} */}
+                  </Text> :
+                null}
             </View>
           </View>
         )}
         ListFooterComponent={() => (
-          <View style={{ height: 20, paddingTop: 25, paddingHorizontal: '15%' }} />
+          <View style={{ height: 100, paddingTop: 25, paddingHorizontal: '15%' }} />
         )}>
         </SectionList>
       </>
