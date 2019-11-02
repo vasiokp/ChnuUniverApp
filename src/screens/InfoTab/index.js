@@ -5,14 +5,7 @@ import { getInfoMessages } from '../../store/actions/index'
 
 class InfoTab extends Component {
   static navigationOptions = {
-    title: 'Довідка',
-    headerStyle: {
-      backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
+    title: 'Довідка'
   };
 
   FlatListItemSeparator = () => {

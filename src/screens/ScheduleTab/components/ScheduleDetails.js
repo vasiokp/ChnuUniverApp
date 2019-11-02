@@ -11,7 +11,8 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
-  Button
+  Button,
+  StyleSheet
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -26,7 +27,7 @@ import {
 import moment from 'moment'
 import classTypes from '../../../plugins/classTypes'
 import { capitalize } from '../../../utils'
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import * as userRoles from '../../../plugins/userRoles'
 
 const refreshInterval = 30000 // 30 seconds
@@ -41,14 +42,12 @@ const saveButton = {
   disabled: true
 }
 
-const iconPrefix = Platform.OS === 'ios' ? 'ios' : 'md'
-
 const addIcon = (
-	<Icon name={`${iconPrefix}-add-circle-outline`} size={22} color="rgb(0, 122, 255)" />
+	<Icon name="plus-square-o" size={22} color="rgb(0, 122, 255)" />
 )
 
 const removeIcon = (
-	<Icon name={`${iconPrefix}-remove-circle-outline`} size={22} color="red" />
+	<Icon name="minus-square-o" size={22} color="red" />
 )
 
 class ScheduleDetails extends Component {
@@ -79,12 +78,11 @@ class ScheduleDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Подробиці',
-      headerRight: () => (
-        <Button
-          onPress={navigation.getParam('saveEvent')}
-          title="Зберегти"
-        />
-      ),
+      headerRight: () => navigation.state.params && !navigation.state.params.disabled ? (
+        <TouchableOpacity onPress={navigation.getParam('saveEvent')}>
+			    <Text style={styles.defaultButtonStyle}>ЗБЕРЕГТИ</Text>
+		    </TouchableOpacity>
+      ) : null
     };
   };
 
@@ -141,6 +139,7 @@ class ScheduleDetails extends Component {
   messageInputs = []
 
   componentDidMount() {
+    this.props.navigation.setParams({ disabled: !this.state.isEnabledSaveBtn });
     this.props.navigation.setParams({ saveEvent: this.saveEvent });
 
     this.props.fetchScheduleDetails(this.props.navigation.getParam('passedItem', {}).Id).then(() => {
@@ -191,6 +190,7 @@ class ScheduleDetails extends Component {
 
   enableSaveButton(enabled) {
     this.setState({isEnabledSaveBtn: enabled})
+    this.props.navigation.setParams({ disabled: !enabled });
   }
 
   removeMessage(message) {
@@ -293,19 +293,19 @@ class ScheduleDetails extends Component {
         ]
       }
     ]
-    if (this.props.navigation.getParam('passedItem', {}).isMyLesson && this.props.profile.userRole === userRoles.TEACHER) {
-      sections.push({
-        title: 'Відмітити присутніх',
-        button: () => (
-          <TouchableOpacity onPress={
-            this.openAttendanceScreen.bind(this, this.props.navigation.getParam('passedItem', {}))
-          }>
-            {addIcon}
-          </TouchableOpacity>
-        ),
-        data: []
-      })
-    }
+    // if (this.props.navigation.getParam('passedItem', {}).isMyLesson && this.props.profile.userRole === userRoles.TEACHER) {
+    //   sections.push({
+    //     title: 'Відмітити присутніх',
+    //     button: () => (
+    //       <TouchableOpacity onPress={
+    //         this.openAttendanceScreen.bind(this, this.props.navigation.getParam('passedItem', {}))
+    //       }>
+    //         {addIcon}
+    //       </TouchableOpacity>
+    //     ),
+    //     data: []
+    //   })
+    // }
 
     if (this.props.profile.userRole === userRoles.STUDENT) {
       if (this.props.navigation.getParam('passedItem', {}).isMyLesson && details.Messages.length > 0) {
@@ -482,5 +482,15 @@ const mapStateToProps = state => {
     profile: state.profile
   }
 }
+
+const styles = StyleSheet.create({
+  defaultButtonStyle: {
+    alignSelf: 'center',
+    fontSize: 17,
+    color: '#666',
+    paddingHorizontal: 15,
+    paddingVertical: 7
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleDetails)

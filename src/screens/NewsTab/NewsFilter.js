@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Animated, Switch, TouchableOpacity, Picker, Platform } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const ANIMATION_DURATION = 300
 
@@ -17,7 +17,7 @@ const pickerStyle = StyleSheet.create({
 })
 
 const chevronIcon = (
-	<Icon name="ios-arrow-down" size={16} style={{ marginLeft: 5 }} />
+	<Icon name="angle-down" size={16} style={{ marginLeft: 5 }} />
 )
 
 const defaultPickerItem = {
