@@ -29,20 +29,9 @@ const noFilterMessage = () => (
 class NewsTabScreen extends Component {
   constructor(props) {
     super(props)
-    // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
     this.state = {
       showFilter: false
     }
-    // Icon.getImageSource((Platform.OS === 'ios' ? 'ios' : 'md') + '-options', 28).then(icon => {
-    //   this.props.navigator.setButtons({
-    //     leftButtons: [{
-    //       id: 'filter',
-    //       icon: icon
-    //     }]
-    //   })
-    //   //fix for android: incorrect recalculation of width, when set left buttons
-    //   this.props.navigator.setStyle({ navBarTitleTextCentered: true });
-    // })
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -55,18 +44,6 @@ class NewsTabScreen extends Component {
         )
     };
   };
-
-  // onNavigatorEvent(event) {
-  //   if (event.type == 'NavBarButtonPress') {
-  //     switch (event.id) {
-  //       case 'filter':
-  //         this.toggleFilter()
-  //         return
-  //       default:
-  //         return
-  //     }
-  //   }
-  // }
 
   ShowDetails = item => {
     this.props.navigation.navigate('NewsScreenDetails', {
