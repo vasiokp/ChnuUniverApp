@@ -57,7 +57,7 @@ class SheduleFilter extends Component {
 				value: t.Id
 			}
 		})
-		items.unshift({ label: 'Всі', value: -1 })
+		if (Platform.OS !== 'ios') items.unshift({ label: 'Всі', value: -1 })
 
 		return items && items.length > 0 ? items : [defaultPickerItem]
 	}
@@ -69,7 +69,7 @@ class SheduleFilter extends Component {
 				value: s.Id
 			}
 		})
-		items.unshift({ label: 'Всі', value: -1 })
+		if (Platform.OS !== 'ios') items.unshift({ label: 'Всі', value: -1 })
 
 		return items && items.length > 0 ? items : [defaultPickerItem]
 	}
@@ -81,7 +81,7 @@ class SheduleFilter extends Component {
 				value: a.Id
 			}
 		})
-		items.unshift({ label: 'Всі', value: -1 })
+		if (Platform.OS !== 'ios') items.unshift({ label: 'Всі', value: -1 })
 
 		return items && items.length > 0 ? items : [defaultPickerItem]
 	}
