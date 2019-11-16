@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Animated, Switch, TouchableOpacity, Picker, Platform } from 'react-native'
+import * as userRoles from '../../../plugins/userRoles'
 import RNPickerSelect from 'react-native-picker-select'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -47,6 +48,7 @@ class SheduleFilter extends Component {
 				value: g.Id
 			}
 		})
+		if (this.props.userRole && this.props.userRole === userRoles.TEACHER && Platform.OS !== 'ios') items.unshift({ label: 'Всі', value: -1 })
 		return items && items.length > 0 ? items : [defaultPickerItem]
 	}
 
