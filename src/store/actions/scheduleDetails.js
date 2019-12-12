@@ -19,9 +19,10 @@ export const clearScheduleDetails = () => {
 }
 
 export const updateScheduleDetails = () => {
-	return (dispatch, getState) => {
-		let item = getState().scheduleDetails.item
-		const lessons = getState().schedule.items[item.Date.substr(0, 10)]
+	return async (dispatch, getState) => {
+		let state = await getState()
+		let item = state.scheduleDetails.item
+		const lessons = state.schedule.items[item.Date.substr(0, 10)]
 		item.moment = getScheduleMoment(item, lessons, moment())
 		dispatch({
 			type: UPDATE_SCHEDULE_DETAILS,
