@@ -19,9 +19,10 @@ export const clearScheduleDetails = () => {
 }
 
 export const updateScheduleDetails = () => {
-	return (dispatch, getState) => {
-		let item = getState().scheduleDetails.item
-		const lessons = getState().schedule.items[item.Date.substr(0, 10)]
+	return async (dispatch, getState) => {
+		let state = await getState()
+		let item = state.scheduleDetails.item
+		const lessons = state.schedule.items[item.Date.substr(0, 10)]
 		item.moment = getScheduleMoment(item, lessons, moment())
 		dispatch({
 			type: UPDATE_SCHEDULE_DETAILS,
@@ -33,12 +34,13 @@ export const updateScheduleDetails = () => {
 export const fetchScheduleDetails = (id, refresh) => {
 	return async (dispatch, getState) => {
 		dispatch({ type: refresh ? FETCH_SCHEDULE_DETAILS.REFRESHING : FETCH_SCHEDULE_DETAILS.PENDING })
+		const state = await getState()
 		if (!refresh) {
 			try {
 				const cachedData = await AsyncStorage.getItem(`scheduleDetails_${id}`)
 				if (cachedData) {
 					const parsedData = JSON.parse(cachedData)
-					const lessons = getState().schedule.items[parsedData.Date]
+					const lessons = state.schedule.items[parsedData.Date]
 					parsedData.moment = getScheduleMoment(parsedData, lessons, moment())
 					dispatch({
 						type: FETCH_SCHEDULE_DETAILS.SUCCESS,
@@ -52,7 +54,7 @@ export const fetchScheduleDetails = (id, refresh) => {
 		try {
 			const result = await axios.get(`/api/schedule/getbyid?id=${id}`)
 			result.data.Date = result.data.Date.substr(0, 10)
-			const lessons = getState().schedule.items[result.data.Date]
+			const lessons = state.schedule.items[result.data.Date]
 			result.data.moment = getScheduleMoment(result.data, lessons, moment())
 			dispatch({
 				type: FETCH_SCHEDULE_DETAILS.SUCCESS,
@@ -74,7 +76,8 @@ export const addNote = (note) => {
 	return async (dispatch, getState) => {
 		dispatch({ type: POST_NOTE.PENDING })
 		try {
-			const applicationUserId = getState().profile.userInfo.ApplicationUserId
+			const state = await getState()
+			const applicationUserId = state.profile.userInfo.ApplicationUserId
 			const result = await axios.post('/api/note/add', {
 				...note,
 				ApplicationUserId: applicationUserId,
@@ -100,7 +103,8 @@ export const updateNote = (note) => {
 	return async (dispatch, getState) => {
 		dispatch({ type: POST_NOTE.PENDING })
 		try {
-			const applicationUserId = getState().profile.userInfo.ApplicationUserId
+			const state = await getState()
+			const applicationUserId = state.profile.userInfo.ApplicationUserId
 			const result = await axios.post('/api/note/update', {
 				...note,
 				ApplicationUserId: applicationUserId,
@@ -126,7 +130,8 @@ export const addMessage = (message) => {
 	return async (dispatch, getState) => {
 		dispatch({ type: POST_MESSAGE.PENDING })
 		try {
-			const applicationUserId = getState().profile.userInfo.ApplicationUserId
+			const state = await getState()
+			const applicationUserId = state.profile.userInfo.ApplicationUserId
 			const result = await axios.post('/api/note/add', {
 				...message,
 				ApplicationUserId: applicationUserId,
@@ -152,7 +157,8 @@ export const updateMessage = (message) => {
 	return async (dispatch, getState) => {
 		dispatch({ type: POST_MESSAGE.PENDING })
 		try {
-			const applicationUserId = getState().profile.userInfo.ApplicationUserId
+			const state = await getState()
+			const applicationUserId = state.profile.userInfo.ApplicationUserId
 			const result = await axios.post('/api/note/update', {
 				...message,
 				ApplicationUserId: applicationUserId,
@@ -178,7 +184,8 @@ export const removeMessage = (id) => {
 	return async (dispatch, getState) => {
 		dispatch({ type: POST_MESSAGE.PENDING })
 		try {
-			const applicationUserId = getState().profile.userInfo.ApplicationUserId
+			const state = await getState()
+			const applicationUserId = state.profile.userInfo.ApplicationUserId
 			const result = await axios.post('/api/note/delete', {
 				Id: id,
 				ApplicationUserId: applicationUserId,
